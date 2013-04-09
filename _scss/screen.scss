@@ -1,0 +1,38 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset";
+@import "compass/css3";
+
+html, body {
+	height: 100%;
+}
+.page {
+	position: relative; // required
+	width: 100%; // required
+	height: 100%; // required
+	overflow: hidden; // required
+	min-height: 180px;
+	text-align: center;
+	color: #fff;
+	font-size: 60px;
+	line-height: 180px;
+}
+.inner {
+	position: relative; // required
+	z-index: 1; // required
+}
+#page1 {
+	background: #ccc url("../img/1.jpg") no-repeat 50% 0;
+	@include background-size(100% 100%);
+}
+#page2 {
+	background: #999 url("../img/2.jpg") no-repeat 50% 0;
+	@include background-size(100% 100%);
+}
+#page3 {
+	background: #ccc url("../img/3.jpg") no-repeat 50% 0;
+	@include background-size(100% 100%);
+}
