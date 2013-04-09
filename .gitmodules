@@ -1,0 +1,3 @@
+[submodule "jquery-preloadimg"]
+	path = jquery-preloadimg
+	url = https://github.com/seckie/jquery-preloadimg.git
