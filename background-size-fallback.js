@@ -13,6 +13,7 @@ window.BackgroundSizeFallback = function (options) {
 	this.opt = {
 		test: false,
 		el: null,
+		fullscreen: true,
 		sizeX: 'auto',
 		sizeY: 'auto'
 	};
@@ -107,12 +108,15 @@ window.BackgroundSizeFallback.prototype = {
 			sizeY = elH;
 		}
 
-		if (elH * ratio < elW) { // landscape
-			w = sizeX;
-			h = Math.floor(sizeX / ratio);
-		} else { // portrait
-			w = Math.floor(sizeY * ratio);
-			h = sizeY;
+
+		if (this.opt.fullscreen === true) {
+			if (&& elH * ratio < elW) { // landscape
+				w = sizeX;
+				h = Math.floor(sizeX / ratio);
+			} else { // portrait
+				w = Math.floor(sizeY * ratio);
+				h = sizeY;
+			}
 		}
 
 		// if number is set in sizeX & sizeY, force size to it.
