@@ -85,11 +85,11 @@ window.BackgroundSizeFallback.prototype = {
 	resetImageSize: function ($img) {
 		var elW = this.$el.width();
 		var elH = this.$el.height();
-		var size = this.getImageSize($img);
-		var ratio = size.width / size.height;
+		var imgsize = this.getImageSize($img);
+		var ratio = imgsize.width / imgsize.height;
 		var sizeX = this.opt.sizeX;
 		var sizeY = this.opt.sizeY;
-		var w, h, percentage;
+		var w, h, percentage, marginLeft;
 
 		if (/%$/.test(sizeX)) { // % size
 			sizeX = sizeX.slice(0, -1);
@@ -102,23 +102,24 @@ window.BackgroundSizeFallback.prototype = {
 			sizeY = Math.ceil(elH * percentage);
 		}
 		if (sizeX === 'auto') {
-			sizeX = elW;
+			sizeX = imgsize.width;
 		}
 		if (sizeY === 'auto') {
-			sizeY = elH;
+			sizeY = imgsize.height;
 		}
 
-
 		if (this.opt.fullscreen === true) {
-			if (&& elH * ratio < elW) { // landscape
+			if (elH * ratio < elW) { // landscape
 				w = sizeX;
 				h = Math.floor(sizeX / ratio);
 			} else { // portrait
 				w = Math.floor(sizeY * ratio);
 				h = sizeY;
 			}
+		} else {
+			w = sizeX;
+			h = sizeY;
 		}
-
 		// if number is set in sizeX & sizeY, force size to it.
 		if (typeof this.opt.sizeX === 'number') {
 			w = this.opt.sizeX;
@@ -126,13 +127,23 @@ window.BackgroundSizeFallback.prototype = {
 		if (typeof this.opt.sizeY === 'number') {
 			h = this.opt.sizeY;
 		}
+		marginLeft = -1 * (w / 2);
+
+		// if 'auto' is set in sizeX & sizeY, force value to it.
+		if (this.opt.sizeX === 'auto') {
+			w = 'auto';
+			marginLeft = -1 * (imgsize / 2);
+		}
+		if (this.opt.sizeY === 'auto') {
+			h = 'auto';
+		}
 
 		$img.css({
 			width: w,
 			height: h,
 			left: '50%',
 			visibility: '',
-			marginLeft: -1 * (w / 2)
+			marginLeft: marginLeft
 		});
 	},
 	appendImage: function (el, $img) {
