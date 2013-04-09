@@ -13,8 +13,8 @@ window.BackgroundSizeFallback = function (options) {
 	this.opt = {
 		test: false,
 		el: null,
-		minWidth: 0,
-		minHeight: 0
+		sizeX: 'auto',
+		sizeY: 'auto'
 	};
 	$.extend(this.opt, options);
 	this.initialize();
@@ -82,20 +82,47 @@ window.BackgroundSizeFallback.prototype = {
 		};
 	},
 	resetImageSize: function ($img) {
-		var docW = Math.max($(window).width(), this.opt.minWidth);
-		var docH = Math.max($(window).height(), this.opt.minHeight)
+		var elW = this.$el.width();
+		var elH = this.$el.height();
 		var size = this.getImageSize($img);
 		var ratio = size.width / size.height;
-		var w, h;
-console.log('docH:', docH);
-console.log('docW:', docW);
-		if (docH * ratio < docW) { // landscape
-			w = docW;
-			h = Math.floor(docW / ratio);
-		} else { // portrait
-			w = Math.floor(docH * ratio);
-			h = docH;
+		var sizeX = this.opt.sizeX;
+		var sizeY = this.opt.sizeY;
+		var w, h, percentage;
+
+		if (/%$/.test(sizeX)) { // % size
+			sizeX = sizeX.slice(0, -1);
+			percentage = sizeX / 100;
+			sizeX = Math.ceil(elW * percentage);
 		}
+		if (/%$/.test(sizeY)) { // % size
+			sizeY = sizeY.slice(0, -1);
+			percentage = sizeY / 100;
+			sizeY = Math.ceil(elH * percentage);
+		}
+		if (sizeX === 'auto') {
+			sizeX = elW;
+		}
+		if (sizeY === 'auto') {
+			sizeY = elH;
+		}
+
+		if (elH * ratio < elW) { // landscape
+			w = sizeX;
+			h = Math.floor(sizeX / ratio);
+		} else { // portrait
+			w = Math.floor(sizeY * ratio);
+			h = sizeY;
+		}
+
+		// if number is set in sizeX & sizeY, force size to it.
+		if (typeof this.opt.sizeX === 'number') {
+			w = this.opt.sizeX;
+		}
+		if (typeof this.opt.sizeY === 'number') {
+			h = this.opt.sizeY;
+		}
+
 		$img.css({
 			width: w,
 			height: h,
