@@ -15,7 +15,8 @@ window.BackgroundSizeFallback = function (options) {
 		el: null,
 		fullscreen: true,
 		sizeX: 'auto',
-		sizeY: 'auto'
+		sizeY: 'auto',
+		renderComplete: function () { }
 	};
 	$.extend(this.opt, options);
 	this.initialize();
@@ -47,6 +48,8 @@ window.BackgroundSizeFallback.prototype = {
 					self.appendImage(el, $img);
 					// save URL for preload
 					$.data(el, 'backgroundimageurl', url);
+					// callback
+					self.opt.renderComplete.call(self);
 				}
 			});
 		});
